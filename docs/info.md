@@ -11,7 +11,7 @@ You can also include images in this folder and reference them in the markdown. E
 
 여러 Master가 동시에 Slave에게 접근할 때 어떤 Master에게 버스의 사용권을 우선적으로 줄지를 결정하는 'AXI Arbiter'를 설계하였습니다.
 
-첫 번째는 'Fixed Priority'인데 말 그대로 고정된 우선순위를 갖는 방식입니다. 6개의 Master를 M0 ~ M5라 했을 때 숫자 인덱스가 낮을수록 높은 우선순위를 갖습니다. 예를 들어 M2, M4가 동시에 Request를 보냈을 경우 M2가 먼저 Service를 받게 됩니다. 이러한 방식의 문제점은 우선순위가 상대적으로 낮은 Master들은 보다 상위의 Master들이 버스를 독점하하게 될 경우 대기하는 시간이 지나치게 길어진다는 점입니다. 이런 점을 방지하기 위해 'Aging'처리를 해주었는데 이는 Master별로 Request를 보내고도 Service 받지 못한 시간을 카운트하여 일정시간 이상이 되면 일시적으로 우선순위를 최상위로 높여주는 방식입니다.  
+첫 번째는 'Fixed Priority'인데 말 그대로 고정된 우선순위를 갖는 방식입니다. 6개의 Master를 M0 ~ M5라 했을 때 숫자 인덱스가 낮을수록 높은 우선순위를 갖습니다. 예를 들어 M2, M4가 동시에 Request를 보냈을 경우 M2가 먼저 Service를 받게 됩니다. 이러한 방식의 문제점은 우선순위가 상대적으로 낮은 Master들은 보다 상위의 Master들이 버스를 독점하게 될 경우 대기하는 시간이 지나치게 길어진다는 점입니다. 이런 점을 방지하기 위해 'Aging'처리를 해주었는데 이는 Master별로 Request를 보내고도 Service 받지 못한 시간을 카운트하여 일정시간 이상이 되면 일시적으로 우선순위를 최상위로 높여주는 방식입니다.  
 
 두 번째는 'LRG Scheme'으로 LRG는 Least Recently Granted의 약자입니다. 이 방식은 가장 최근에 Service를 받지 못한 Master에게 높은 우선순위를 주는 것 입니다. 이러한 방식은 이전 Stage에서 버스를 사용한 Master를 다음 Stage에서는 최하위의 우선순위로 내림으로써 구현할 수 있습니다. 가령 초기의 우선순위가 M0 > M1 > M2 > M3 > M4 > M5인 상태에서 M3가 Request를 보내고 Service를 받았다면 다음 Stage에서는 M3가 최하위가 되어 M0 > M1 > M2 > M4 > M5 > M3가 되는 것입니다.
 
